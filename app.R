@@ -9,7 +9,7 @@ library(dplyr)
 
 source("R/vector_plot.R")
 
-vector_regions <- c("Whole area", "IHU areas")
+vector_regions <- c("Whole area", "IHU areas", "Wader areas")
 
 ui <- fluidPage(
     navlistPanel(
@@ -68,6 +68,23 @@ server <- function(input, output) {
                 },
                 content = function(file) {
                     saveRDS(areas_os, file)
+                })
+            
+        } else if(selected_region == "Wader areas"){
+            output$vector_map <- renderLeaflet({
+                leaflet() %>%
+                    addTiles() %>% 
+                    addProviderTiles(providers$Esri.WorldImagery,
+                                     options = providerTileOptions(noWrap = TRUE)
+                    ) %>%
+                    addFeatures(wader_areas_ll)
+            })
+            output$download_vect <- downloadHandler(
+                filename = function() {
+                    paste0(input$dataset, ".RDS")
+                },
+                content = function(file) {
+                    saveRDS(wader_areas_os, file)
                 })
             
  
