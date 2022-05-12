@@ -17,7 +17,8 @@ ui <- fluidPage(
         tabPanel("Vector",
                  h2("Vector data"),
                  p("Select catchment and river data from this page"),
-                 leafletOutput("vector_map")),
+                 leafletOutput("vector_map"),
+                 downloadButton("download_vect", "Download RDS")),
         tabPanel("Raster",
                  h2("Raster data"),
                  p("Select land cover and elevation data from this page"))
@@ -26,10 +27,7 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-    # coast_os <- readRDS("data/coast.RDS")
-    # coast_ll <- st_transform(coast_os, 4326)
-    # coast_ll <- dplyr::mutate(coast_ll, label = "Wader study region")
-    
+
     output$vector_map <- renderLeaflet({
         leaflet() %>%
             addTiles() %>% 
@@ -38,6 +36,18 @@ server <- function(input, output) {
                              ) %>%
             addFeatures(coast_ll) 
     })
+    
+    data <- reactive(
+        coast_os
+    )
+    
+    output$download_vect <- downloadHandler(
+        filename = function() {
+            paste0(input$dataset, ".RDS")
+        },
+        content = function(file) {
+            saveRDS(data(), file)
+        })
 }
 
 # Run the application 
