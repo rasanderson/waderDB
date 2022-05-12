@@ -7,6 +7,7 @@ library(leafem)
 library(leaflet.providers)
 library(dplyr)
 
+source("R/vector_plot.R")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -25,9 +26,9 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-    coast_os <- readRDS("data/coast.RDS")
-    coast_ll <- st_transform(coast_os, 4326)
-    coast_ll <- dplyr::mutate(coast_ll, label = "Wader study region")
+    # coast_os <- readRDS("data/coast.RDS")
+    # coast_ll <- st_transform(coast_os, 4326)
+    # coast_ll <- dplyr::mutate(coast_ll, label = "Wader study region")
     
     output$vector_map <- renderLeaflet({
         leaflet() %>%
