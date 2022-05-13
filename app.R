@@ -7,7 +7,7 @@ library(leafem)
 library(leaflet.providers)
 library(dplyr)
 
-vector_regions <- c("Whole area", "IHU areas", "Wader areas")
+vector_regions <- c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region")
 
 ui <- fluidPage(
     navlistPanel(
@@ -68,6 +68,23 @@ server <- function(input, output) {
                     saveRDS(areas_os, file)
                 })
             
+        } else if(selected_region == "Wader groups"){
+            output$vector_map <- renderLeaflet({
+                leaflet() %>%
+                    addTiles() %>% 
+                    addProviderTiles(providers$Esri.WorldImagery,
+                                     options = providerTileOptions(noWrap = TRUE)
+                    ) %>%
+                    addFeatures(wader_groups_ll)
+            })
+            output$download_vect <- downloadHandler(
+                filename = function() {
+                    paste0(input$dataset, ".RDS")
+                },
+                content = function(file) {
+                    saveRDS(wader_groups_os, file)
+                })
+            
         } else if(selected_region == "Wader areas"){
             output$vector_map <- renderLeaflet({
                 leaflet() %>%
@@ -84,7 +101,23 @@ server <- function(input, output) {
                 content = function(file) {
                     saveRDS(wader_areas_os, file)
                 })
-            
+         } else if(selected_region == "Wader region"){
+                output$vector_map <- renderLeaflet({
+                    leaflet() %>%
+                        addTiles() %>% 
+                        addProviderTiles(providers$Esri.WorldImagery,
+                                         options = providerTileOptions(noWrap = TRUE)
+                        ) %>%
+                        addFeatures(wader_region_ll)
+                })
+                output$download_vect <- downloadHandler(
+                    filename = function() {
+                        paste0(input$dataset, ".RDS")
+                    },
+                    content = function(file) {
+                        saveRDS(wader_region_os, file)
+                    })
+                
  
         }
     })
