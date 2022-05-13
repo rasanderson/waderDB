@@ -7,8 +7,6 @@ library(leafem)
 library(leaflet.providers)
 library(dplyr)
 
-source("R/vector_plot.R")
-
 vector_regions <- c("Whole area", "IHU areas", "Wader areas")
 
 ui <- fluidPage(
