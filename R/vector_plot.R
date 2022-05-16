@@ -20,10 +20,26 @@ wader_areas_ll <- st_transform(wader_areas_os, 4326)
 wader_region_os <- readRDS("data/wader_region.RDS")
 wader_region_ll <- st_transform(wader_region_os, 4326)
 
+library(raster)
+budle_50m_os  <- readRDS("data/budle_50m.RDS")
+budle_75m_os  <- readRDS("data/budle_75m.RDS")
+budle_100m_os <- readRDS("data/budle_100m.RDS")
+budle_50m_ll  <- projectRaster(budle_50m_os, crs=CRS("+init=epsg:4326"))
+budle_75m_ll  <- projectRaster(budle_75m_os, crs=CRS("+init=epsg:4326"))
+budle_100m_ll <- projectRaster(budle_100m_os, crs=CRS("+init=epsg:4326"))
+crs(budle_50m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+crs(budle_75m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 
 vector_df <- data.frame(
   selection = c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region"),
   ll_map    = c("coast_ll", "areas_ll", "wader_groups_ll", "wader_areas_ll", "wader_region_ll"),
   os_map    = c("coast_os", "areas_os", "wader_groups_os", "wader_areas_os", "wader_region_os")
+)
+
+budle_df <- data.frame(
+  selection = c("50m", "75m", "100m"),
+  ll_map    = c("budle_50m_ll", "budle_75m_ll", "budle_100m_ll"),
+  os_map    = c("budle_50m_os", "budle_75m_os", "budle_100m_os")
 )
