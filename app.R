@@ -85,16 +85,6 @@ server <- function(input, output) {
       display_raster(selected_res, budle_df)
     })
 
-    
-    #selected_dem <- input$budle_dem
-    # output$budle_dem <- renderLeaflet({
-    #   leaflet() %>% 
-    #     addTiles() %>% 
-    #     addRasterImage(budle_50m_ll, colors=topo.colors(25, alpha = 0.5))
-    # })
-    #   
-      
-
 }
 
 # Run the application 
