@@ -22,12 +22,14 @@ ui <- fluidPage(
                  p(),
                  p("Data download is R internal RDS format. Use readRDS to input into R."),
                  downloadButton("download_vect", "Download RDS")),
-        tabPanel("Budle Bay DEM raster",
+        tabPanel("Budle Bay bathymetric",
                  h2("Detailed modelling by Steve for Budle Bay"),
                  p("Select spatial resolution"),
                  radioButtons("budle_res", "Select resolution", c("50m", "75m", "100m")),
-                 leafletOutput("budle_dem")
-        )
+                 leafletOutput("raster_map"),
+                 p(),
+                 p("Data download is R internal RDS format. Use readRDS to input into R."),
+                 downloadButton("download_rast", "Download RDS"))
     )
 )
 
@@ -53,20 +55,44 @@ server <- function(input, output) {
                 })
     }
     
+    display_raster <- function(selected_region, raster_df){
+      this_choice <- filter(raster_df, selected_region == selection)
+      output$raster_map <- renderLeaflet({
+        leaflet() %>%
+          addTiles() %>%
+          addProviderTiles(providers$Esri.WorldImagery,
+                           options = providerTileOptions(noWrap = TRUE)
+          ) %>%
+          addRasterImage(get(this_choice[1,"ll_map"]), colors=topo.colors(25, alpha = 0.5))
+      })
+      output$download_rast <- downloadHandler(
+        filename = function() {
+          paste0(input$download_rast, ".RDS")
+        },
+        content = function(file) {
+          saveRDS(get(this_choice[1, "os_map"]), file)
+        })
+    }
+    
+    
     observeEvent(input$region, {
         selected_region <- input$region
-        #cat(file=stderr(), "selected region is", input$region, "\n")
-        
-        display_vector(selected_region, vector_df)
+         display_vector(selected_region, vector_df)
     })
     
-    #selected_dem <- input$budle_dem
-    output$budle_dem <- renderLeaflet({
-      leaflet() %>% 
-        addTiles() %>% 
-        addRasterImage(budle_50m_ll, colors=topo.colors(25, alpha = 0.5))
+    observeEvent(input$budle_res, {
+      selected_res <- input$budle_res
+      display_raster(selected_res, budle_df)
     })
-      
+
+    
+    #selected_dem <- input$budle_dem
+    # output$budle_dem <- renderLeaflet({
+    #   leaflet() %>% 
+    #     addTiles() %>% 
+    #     addRasterImage(budle_50m_ll, colors=topo.colors(25, alpha = 0.5))
+    # })
+    #   
       
 
 }

@@ -37,3 +37,9 @@ vector_df <- data.frame(
   ll_map    = c("coast_ll", "areas_ll", "wader_groups_ll", "wader_areas_ll", "wader_region_ll"),
   os_map    = c("coast_os", "areas_os", "wader_groups_os", "wader_areas_os", "wader_region_os")
 )
+
+budle_df <- data.frame(
+  selection = c("50m", "75m", "100m"),
+  ll_map    = c("budle_50m_ll", "budle_75m_ll", "budle_100m_ll"),
+  os_map    = c("budle_50m_os", "budle_75m_os", "budle_100m_os")
+)
