@@ -1,48 +1,61 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Wader DB main script
 
 library(shiny)
+library(sf)
+library(leaflet)
+library(leafem)
+library(leaflet.providers)
+library(dplyr)
 
-# Define UI for application that draws a histogram
+vector_regions <- c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region")
+
 ui <- fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
-        )
+    navlistPanel(
+        id = "tabset",
+        "Wader DB",
+        tabPanel("Main regions",
+                 h2("Regional boundaries"),
+                 p("Select catchment Integrated Hydrological Units (EA) from this page"),
+                 radioButtons("region", "Select vector dataset", vector_regions),
+                 leafletOutput("vector_map"),
+                 p(),
+                 p("Data download is R internal RDS format. Use readRDS to input into R."),
+                 downloadButton("download_vect", "Download RDS")),
+        tabPanel("Raster",
+                 h2("Raster data"),
+                 p("Select land cover and elevation data from this page"))
     )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic 
 server <- function(input, output) {
-
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    
+    display_vector <- function(selected_region, vector_df){
+        this_choice <- filter(vector_df, selected_region == selection)
+            output$vector_map <- renderLeaflet({
+                leaflet() %>%
+                    addTiles() %>%
+                    addProviderTiles(providers$Esri.WorldImagery,
+                                     options = providerTileOptions(noWrap = TRUE)
+                    ) %>%
+                    addFeatures(get(this_choice[1,"ll_map"]))
+            })
+            output$download_vect <- downloadHandler(
+                filename = function() {
+                    paste0(input$download_vect, ".RDS")
+                },
+                content = function(file) {
+                    saveRDS(get(this_choice[1, "os_map"]), file)
+                })
+    }
+    
+    observeEvent(input$region, {
+        selected_region <- input$region
+        #cat(file=stderr(), "selected region is", input$region, "\n")
+        
+        display_vector(selected_region, vector_df)
     })
+
 }
 
 # Run the application 
