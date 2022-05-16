@@ -7,6 +7,7 @@ library(leafem)
 library(leaflet.providers)
 library(dplyr)
 
+
 vector_regions <- c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region")
 
 ui <- fluidPage(
@@ -21,9 +22,12 @@ ui <- fluidPage(
                  p(),
                  p("Data download is R internal RDS format. Use readRDS to input into R."),
                  downloadButton("download_vect", "Download RDS")),
-        tabPanel("Raster",
-                 h2("Raster data"),
-                 p("Select land cover and elevation data from this page"))
+        tabPanel("Budle Bay DEM raster",
+                 h2("Detailed modelling by Steve for Budle Bay"),
+                 p("Select spatial resolution"),
+                 radioButtons("budle_res", "Select resolution", c("50m", "75m", "100m")),
+                 leafletOutput("budle_dem")
+        )
     )
 )
 
@@ -55,6 +59,15 @@ server <- function(input, output) {
         
         display_vector(selected_region, vector_df)
     })
+    
+    #selected_dem <- input$budle_dem
+    output$budle_dem <- renderLeaflet({
+      leaflet() %>% 
+        addTiles() %>% 
+        addRasterImage(budle_50m_ll, colors=topo.colors(25, alpha = 0.5))
+    })
+      
+      
 
 }
 
