@@ -65,12 +65,12 @@ northumbria_wfd_df <- data.frame(
   os_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll")
 )
 
-northumbria_wfd_lst <- list(
-  "selection" = list("Transitional Water Bodies", "Surface Water Operational Catchments",
-                "Surface Water Management Catchments"),
-  "ll_map"    = list("Transitional Water Bodies" = northumbria_twb_ll,
-                     "Surface Water Operational Catchments" = northumbria_swoc_ll,
-                     "Surface Water Management Catchments" =northumbria_swmc_ll),
-  "os_map"    = list(northumbria_twb_ll, northumbria_swoc_ll, northumbria_swmc_ll)
-)
+# northumbria_wfd_lst <- list(
+#   "selection" = list("Transitional Water Bodies", "Surface Water Operational Catchments",
+#                 "Surface Water Management Catchments"),
+#   "ll_map"    = list("Transitional Water Bodies" = northumbria_twb_ll,
+#                      "Surface Water Operational Catchments" = northumbria_swoc_ll,
+#                      "Surface Water Management Catchments" =northumbria_swmc_ll),
+#   "os_map"    = list(northumbria_twb_ll, northumbria_swoc_ll, northumbria_swmc_ll)
+# )
 

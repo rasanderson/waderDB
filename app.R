@@ -91,7 +91,7 @@ server <- function(input, output) {
       display_raster(selected_res, budle_df)
     })
     
-    display_mapServer("WFD", northumbria_wfd_df, northumbria_swoc_ll)
+    display_mapServer("WFD", northumbria_wfd_df)
 
 }
 
