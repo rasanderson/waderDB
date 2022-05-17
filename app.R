@@ -29,7 +29,13 @@ ui <- fluidPage(
                  leafletOutput("raster_map"),
                  p(),
                  p("Data download is R internal RDS format. Use readRDS to input into R."),
-                 downloadButton("download_rast", "Download RDS"))
+                 downloadButton("download_rast", "Download RDS")),
+        tabPanel("WFD Northumbria",
+                 display_mapUI("WFD",
+                               heading = "Water Frameworks Directive Northumbria",
+                               description = "Environment agency data from WFD for Northumbria",
+                               map_info = northumbria_wfd_df))
+                 # display_mapUI("WFD"))
     )
 )
 
@@ -84,6 +90,8 @@ server <- function(input, output) {
       selected_res <- input$budle_res
       display_raster(selected_res, budle_df)
     })
+    
+    display_mapServer("WFD", northumbria_wfd_df, northumbria_swoc_ll)
 
 }
 

@@ -32,6 +32,13 @@ crs(budle_75m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 
+northumbria_twb_os <- readRDS("data/Northumbria_TWB.RDS")
+northumbria_swoc_os <- readRDS("data/Northumbria_SWOC.RDS")
+northumbria_swmc_os <- readRDS("data/Northumbria_SWMC.RDS")
+northumbria_twb_ll <- st_transform(northumbria_twb_os, 4326)
+northumbria_swoc_ll <- st_transform(northumbria_swoc_os, 4326)
+northumbria_swmc_ll <- st_transform(northumbria_swmc_os, 4326)
+
 vector_df <- data.frame(
   selection = c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region"),
   ll_map    = c("coast_ll", "areas_ll", "wader_groups_ll", "wader_areas_ll", "wader_region_ll"),
@@ -43,3 +50,27 @@ budle_df <- data.frame(
   ll_map    = c("budle_50m_ll", "budle_75m_ll", "budle_100m_ll"),
   os_map    = c("budle_50m_os", "budle_75m_os", "budle_100m_os")
 )
+
+budle_list <- list(
+  selection = c("50m", "75m", "100m"),
+  ll_map    = c(budle_50m_ll, budle_75m_ll, budle_100m_ll),
+  os_map    = c(budle_50m_os, budle_75m_os, budle_100m_os)
+)
+
+
+northumbria_wfd_df <- data.frame(
+  selection = c("Transitional Water Bodies", "Surface Water Operational Catchments",
+                "Surface Water Management Catchments"),
+  ll_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll"),
+  os_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll")
+)
+
+northumbria_wfd_lst <- list(
+  "selection" = list("Transitional Water Bodies", "Surface Water Operational Catchments",
+                "Surface Water Management Catchments"),
+  "ll_map"    = list("Transitional Water Bodies" = northumbria_twb_ll,
+                     "Surface Water Operational Catchments" = northumbria_swoc_ll,
+                     "Surface Water Management Catchments" =northumbria_swmc_ll),
+  "os_map"    = list(northumbria_twb_ll, northumbria_swoc_ll, northumbria_swmc_ll)
+)
+
