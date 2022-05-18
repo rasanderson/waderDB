@@ -20,13 +20,6 @@ ui <- fluidPage(
                                description = "Select catchment Integrated Hydrological Units (EA) from this page",
                                map_info = vector_df
                                )),
-                 # h2("Regional boundaries"),
-                 # p("Select catchment Integrated Hydrological Units (EA) from this page"),
-                 # radioButtons("region", "Select vector dataset", vector_regions),
-                 # leafletOutput("vector_map"),
-                 # p(),
-                 # p("Data download is R internal RDS format. Use readRDS to input into R."),
-                 # downloadButton("download_vect", "Download RDS")),
         tabPanel("Budle Bay bathymetric",
                  h2("Detailed modelling by Steve for Budle Bay"),
                  p("Select spatial resolution"),
@@ -46,25 +39,7 @@ ui <- fluidPage(
 # Define server logic 
 server <- function(input, output) {
     
-    # display_vector <- function(selected_region, vector_df){
-    #     this_choice <- filter(vector_df, selected_region == selection)
-    #         output$vector_map <- renderLeaflet({
-    #             leaflet() %>%
-    #                 addTiles() %>%
-    #                 addProviderTiles(providers$Esri.WorldImagery,
-    #                                  options = providerTileOptions(noWrap = TRUE)
-    #                 ) %>%
-    #                 addFeatures(get(this_choice[1,"ll_map"]))
-    #         })
-    #         output$download_vect <- downloadHandler(
-    #             filename = function() {
-    #                 paste0(input$download_vect, ".RDS")
-    #             },
-    #             content = function(file) {
-    #                 saveRDS(get(this_choice[1, "os_map"]), file)
-    #             })
-    # }
-    
+
     display_raster <- function(selected_region, raster_df){
       this_choice <- filter(raster_df, selected_region == selection)
       output$raster_map <- renderLeaflet({

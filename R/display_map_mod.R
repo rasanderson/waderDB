@@ -34,7 +34,7 @@ display_mapServer <- function(id, map_info){
           )  %>%
           addFeatures(this_ll_map)
       })
-      cat(file=stderr(), "this_map is", class(this_os_map), "\n")
+      # cat(file=stderr(), "this_map is", class(this_os_map), "\n")
       
 
       
@@ -61,58 +61,11 @@ display_mapServer <- function(id, map_info){
         },
         content = function(file) {
           saveRDS(this_os_map, file)
-          #saveRDS(tmp, file)
         })
-      
-      
-      
+
     })
 
-    # ns <- NS(id)
-    # observeEvent(input$action, {
-    # 
-    #     showModal(
-    #       modalDialog(
-    #         title = NULL,
-    #         h3("Download the file?"),
-    #         footer = tagList(
-    #           downloadButton(
-    #             outputId = ns("download")
-    #           ),
-    #           modalButton("Cancel")
-    #         )
-    #       )
-    #     )
-    #   }
-    # )
-    # output$download <- downloadHandler(
-    #   filename = function() {
-    #     paste0(input$download, ".RDS")
-    #   },
-    #   content = function(file) {
-    #     saveRDS(this_os_map, file)
-    #     #saveRDS(tmp, file)
-    #   })
-    
-    
-    # output$download <- downloadHandler(
-    #   filename = paste0(filename, ".RDS"),
-    #   content = function(file){
-    #     # saveRDS(get("this_os_map"), file = file)
-    #     # saveRDS(tmp, file)
-    #   })
-    
+
   })
 }
 
-#       output$download_vect <- downloadHandler(
-#         filename = function() {
-#           paste0(input$download_R, ".RDS")
-#         },
-#         content = function(file) {
-#           saveRDS(get("this_os_map"), file)
-#         })
-#       
-#     })    
-#   })
-# }
