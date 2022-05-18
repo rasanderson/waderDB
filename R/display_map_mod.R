@@ -1,6 +1,8 @@
 # Shiny module for map display and data download. As this is likely to be a
 # common pattern for many datasets, might be simplest as a module
 
+# Needs doing for display_mapUI
+# add a parameter 'type' that defaults to 'type = "vector"' but accepts "raster"
 display_mapUI <- function(id, heading, description, map_info){
   ns <- NS(id)
     tagList(
@@ -18,6 +20,8 @@ display_mapUI <- function(id, heading, description, map_info){
     )
 }
 
+# Needs doing. Add parameter 'type' and alter code to display raster map.
+# Alternatively, add a flag in the map_info data.frame.
 display_mapServer <- function(id, map_info){
   moduleServer(id, function(input, output, session){
     

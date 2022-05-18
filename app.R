@@ -18,7 +18,7 @@ ui <- fluidPage(
                  display_mapUI("region",
                                heading = "Regional boundaries",
                                description = "Select catchment Integrated Hydrological Units (EA) from this page",
-                               map_info = vector_df
+                               map_info = region_df
                                )),
         tabPanel("Budle Bay bathymetric",
                  h2("Detailed modelling by Steve for Budle Bay"),
@@ -38,7 +38,6 @@ ui <- fluidPage(
 
 # Define server logic 
 server <- function(input, output) {
-    
 
     display_raster <- function(selected_region, raster_df){
       this_choice <- filter(raster_df, selected_region == selection)
@@ -58,19 +57,15 @@ server <- function(input, output) {
           saveRDS(get(this_choice[1, "os_map"]), file)
         })
     }
-    
-    
-    # observeEvent(input$region, {
-    #     selected_region <- input$region
-    #      display_vector(selected_region, vector_df)
-    # })
-    
+
     observeEvent(input$budle_res, {
       selected_res <- input$budle_res
       display_raster(selected_res, budle_df)
     })
+
     
-    display_mapServer("region", vector_df)
+    display_mapServer("region", region_df)
+    # display_mapServer("budle", budgle_df, type = "raster") # Needs doing
     display_mapServer("WFD", northumbria_wfd_df)
 
 }
