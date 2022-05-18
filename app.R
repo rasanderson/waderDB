@@ -15,13 +15,18 @@ ui <- fluidPage(
         id = "tabset",
         "Wader DB",
         tabPanel("Main regions",
-                 h2("Regional boundaries"),
-                 p("Select catchment Integrated Hydrological Units (EA) from this page"),
-                 radioButtons("region", "Select vector dataset", vector_regions),
-                 leafletOutput("vector_map"),
-                 p(),
-                 p("Data download is R internal RDS format. Use readRDS to input into R."),
-                 downloadButton("download_vect", "Download RDS")),
+                 display_mapUI("region",
+                               heading = "Regional boundaries",
+                               description = "Select catchment Integrated Hydrological Units (EA) from this page",
+                               map_info = vector_df
+                               )),
+                 # h2("Regional boundaries"),
+                 # p("Select catchment Integrated Hydrological Units (EA) from this page"),
+                 # radioButtons("region", "Select vector dataset", vector_regions),
+                 # leafletOutput("vector_map"),
+                 # p(),
+                 # p("Data download is R internal RDS format. Use readRDS to input into R."),
+                 # downloadButton("download_vect", "Download RDS")),
         tabPanel("Budle Bay bathymetric",
                  h2("Detailed modelling by Steve for Budle Bay"),
                  p("Select spatial resolution"),
@@ -35,31 +40,30 @@ ui <- fluidPage(
                                heading = "Water Frameworks Directive Northumbria",
                                description = "Environment agency data from WFD for Northumbria",
                                map_info = northumbria_wfd_df))
-                 # display_mapUI("WFD"))
     )
 )
 
 # Define server logic 
 server <- function(input, output) {
     
-    display_vector <- function(selected_region, vector_df){
-        this_choice <- filter(vector_df, selected_region == selection)
-            output$vector_map <- renderLeaflet({
-                leaflet() %>%
-                    addTiles() %>%
-                    addProviderTiles(providers$Esri.WorldImagery,
-                                     options = providerTileOptions(noWrap = TRUE)
-                    ) %>%
-                    addFeatures(get(this_choice[1,"ll_map"]))
-            })
-            output$download_vect <- downloadHandler(
-                filename = function() {
-                    paste0(input$download_vect, ".RDS")
-                },
-                content = function(file) {
-                    saveRDS(get(this_choice[1, "os_map"]), file)
-                })
-    }
+    # display_vector <- function(selected_region, vector_df){
+    #     this_choice <- filter(vector_df, selected_region == selection)
+    #         output$vector_map <- renderLeaflet({
+    #             leaflet() %>%
+    #                 addTiles() %>%
+    #                 addProviderTiles(providers$Esri.WorldImagery,
+    #                                  options = providerTileOptions(noWrap = TRUE)
+    #                 ) %>%
+    #                 addFeatures(get(this_choice[1,"ll_map"]))
+    #         })
+    #         output$download_vect <- downloadHandler(
+    #             filename = function() {
+    #                 paste0(input$download_vect, ".RDS")
+    #             },
+    #             content = function(file) {
+    #                 saveRDS(get(this_choice[1, "os_map"]), file)
+    #             })
+    # }
     
     display_raster <- function(selected_region, raster_df){
       this_choice <- filter(raster_df, selected_region == selection)
@@ -81,16 +85,17 @@ server <- function(input, output) {
     }
     
     
-    observeEvent(input$region, {
-        selected_region <- input$region
-         display_vector(selected_region, vector_df)
-    })
+    # observeEvent(input$region, {
+    #     selected_region <- input$region
+    #      display_vector(selected_region, vector_df)
+    # })
     
     observeEvent(input$budle_res, {
       selected_res <- input$budle_res
       display_raster(selected_res, budle_df)
     })
     
+    display_mapServer("region", vector_df)
     display_mapServer("WFD", northumbria_wfd_df)
 
 }

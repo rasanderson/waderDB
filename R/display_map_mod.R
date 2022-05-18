@@ -2,38 +2,117 @@
 # common pattern for many datasets, might be simplest as a module
 
 display_mapUI <- function(id, heading, description, map_info){
+  ns <- NS(id)
     tagList(
       h2(heading),
       p(description),
       radioButtons(NS(id, "radio"), "Select dataset", choices = map_info$selection),
       leafletOutput(NS(id, "leaflet_map")),
       p("download data"),
-      downloadButton(NS(id, "download_R"), "Download RDS")
+#      downloadButton(NS(id, "download_R"), "Download RDS")
+      actionButton(
+        inputId = ns("action"),
+        label = "get data",
+        icon = icon("download")
+      )
     )
 }
 
 display_mapServer <- function(id, map_info){
   moduleServer(id, function(input, output, session){
+    
     observeEvent(input$radio, {
       this_choice <- filter(map_info, input$radio == selection)
       this_ll_map <- get(this_choice[1, "ll_map"])
       this_os_map <- get(this_choice[1, "os_map"])
-      
+
       output$leaflet_map <- renderLeaflet({
-        leaflet() %>% 
+        leaflet() %>%
           addTiles() %>%
           addProviderTiles(providers$Esri.WorldImagery,
                            options = providerTileOptions(noWrap = TRUE)
           )  %>%
           addFeatures(this_ll_map)
       })
-      output$download_vect <- downloadHandler(
+      cat(file=stderr(), "this_map is", class(this_os_map), "\n")
+      
+
+      
+      ns <- NS(id)
+      observeEvent(input$action, {
+
+          showModal(
+            modalDialog(
+              title = NULL,
+              h3("Download the file?"),
+              footer = tagList(
+                downloadButton(
+                  outputId = ns("download")
+                ),
+                modalButton("Cancel")
+              )
+            )
+          )
+        }
+      )
+      output$download <- downloadHandler(
         filename = function() {
-          paste0(input$download_R, ".RDS")
+          paste0(input$download, ".RDS")
         },
         content = function(file) {
-          saveRDS(get(this_choice[1, "this_os_map"]), file)
+          saveRDS(this_os_map, file)
+          #saveRDS(tmp, file)
         })
-    })    
+      
+      
+      
+    })
+
+    # ns <- NS(id)
+    # observeEvent(input$action, {
+    # 
+    #     showModal(
+    #       modalDialog(
+    #         title = NULL,
+    #         h3("Download the file?"),
+    #         footer = tagList(
+    #           downloadButton(
+    #             outputId = ns("download")
+    #           ),
+    #           modalButton("Cancel")
+    #         )
+    #       )
+    #     )
+    #   }
+    # )
+    # output$download <- downloadHandler(
+    #   filename = function() {
+    #     paste0(input$download, ".RDS")
+    #   },
+    #   content = function(file) {
+    #     saveRDS(this_os_map, file)
+    #     #saveRDS(tmp, file)
+    #   })
+    
+    
+    # output$download <- downloadHandler(
+    #   filename = paste0(filename, ".RDS"),
+    #   content = function(file){
+    #     # saveRDS(get("this_os_map"), file = file)
+    #     # saveRDS(tmp, file)
+    #   })
+    
   })
 }
+
+#       output$download_vect <- downloadHandler(
+#         filename = function() {
+#           paste0(input$download_R, ".RDS")
+#         },
+#         content = function(file) {
+#           saveRDS(get("this_os_map"), file)
+#         })
+#       
+#     })    
+#   })
+# }
