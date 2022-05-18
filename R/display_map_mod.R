@@ -15,17 +15,10 @@ display_mapUI <- function(id, heading, description, map_info){
 display_mapServer <- function(id, map_info){
   moduleServer(id, function(input, output, session){
     observeEvent(input$radio, {
-      this_choice <- input$radio
-
-      # Get index number and then maps
-      len_lst <- length(map_info)
-      idx_lst <- 1:len_lst
-      lmap_no <- map_info$selection == this_choice
-      idx_lst <- idx_lst[lmap_no]
-      this_ll_map <- get(map_info$ll_map[[idx_lst]])
-      this_os_map <- get(map_info$os_map[[idx_lst]])
+      this_choice <- filter(map_info, input$radio == selection)
+      this_ll_map <- get(this_choice[1, "ll_map"])
+      this_os_map <- get(this_choice[1, "os_map"])
       
-      #  cat(file=stderr(), "this_map is", class(this_map), "\n")
       output$leaflet_map <- renderLeaflet({
         leaflet() %>% 
           addTiles() %>%
