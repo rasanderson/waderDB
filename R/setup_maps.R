@@ -24,12 +24,12 @@ library(raster)
 budle_50m_os  <- readRDS("data/budle_50m.RDS")
 budle_75m_os  <- readRDS("data/budle_75m.RDS")
 budle_100m_os <- readRDS("data/budle_100m.RDS")
-budle_50m_ll  <- projectRaster(budle_50m_os, crs=CRS("+init=epsg:4326"))
-budle_75m_ll  <- projectRaster(budle_75m_os, crs=CRS("+init=epsg:4326"))
-budle_100m_ll <- projectRaster(budle_100m_os, crs=CRS("+init=epsg:4326"))
-crs(budle_50m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-crs(budle_75m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# budle_50m_ll  <- projectRaster(budle_50m_os, crs=CRS("+init=epsg:4326"))
+# budle_75m_ll  <- projectRaster(budle_75m_os, crs=CRS("+init=epsg:4326"))
+# budle_100m_ll <- projectRaster(budle_100m_os, crs=CRS("+init=epsg:4326"))
+# crs(budle_50m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# crs(budle_75m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+# crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 
 northumbria_twb_os <- readRDS("data/Northumbria_TWB.RDS")
@@ -57,3 +57,7 @@ northumbria_wfd_df <- data.frame(
   ll_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll"),
   os_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll")
 )
+
+ndt_spat <- readRDS("data/ndt_spat_2021.rds")
+
+hibb_wqd <- readRDS("data/HIBB_WQD.rds")
