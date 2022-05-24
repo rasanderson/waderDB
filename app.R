@@ -6,6 +6,7 @@ library(leaflet)
 library(leafem)
 library(leaflet.providers)
 library(dplyr)
+library(tmap)
 
 
 vector_regions <- c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region")
@@ -32,7 +33,17 @@ ui <- fluidPage(
                  display_mapUI("WFD",
                                heading = "Water Frameworks Directive Northumbria",
                                description = "Environment agency data from WFD for Northumbria",
-                               map_info = northumbria_wfd_df))
+                               map_info = northumbria_wfd_df)),
+        tabPanel("Water Quailty",
+                 display_mapUI("points",
+                               heading = "Water sampling points",
+                               description = " Sample data collected to monitor water quality",
+                               map_info = wqd_df)),
+        tabPanel("Explore all",
+                h2("All spatial data"),
+                p(" All data are displayed on the map, you can toggle through the 
+                  layers and turn their display off and on using the icon in the top left of the map"),
+                tmapOutput("mapall"))
     )
 )
 
@@ -68,7 +79,15 @@ server <- function(input, output) {
     # display_mapServer("budle", budgle_df, type = "raster") # Needs doing
     display_mapServer("WFD", northumbria_wfd_df)
 
-}
+    
+    # display all data on an interactive map
+    output$mapall <- renderTmap({
+
+tm_shape(hibb_wqd)+tm_dots(col = "blue")+
+        tm_shape(ndt_spat)+tm_dots()
+    })
+
+ }
 
 # Run the application 
 shinyApp(ui = ui, server = server)

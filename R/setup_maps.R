@@ -58,6 +58,14 @@ northumbria_wfd_df <- data.frame(
   os_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll")
 )
 
-ndt_spat <- readRDS("data/ndt_spat_2021.rds")
 
+ndt_spat <- readRDS("data/ndt_spat_2021.rds")
 hibb_wqd <- readRDS("data/HIBB_WQD.rds")
+
+wqd_df <- data.frame(
+  selection = c("Standard monitoring data","HIBB Project Data"),
+  ll_map=c("ndt_spat", "hibb_wqd"),
+  os_map = c("ndt_spat", "hibb_wqd")
+)
+
+
