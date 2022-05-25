@@ -85,8 +85,8 @@ server <- function(input, output) {
     # display all data on an interactive map
     output$mapall <- renderTmap({
 
-tm_shape(hibb_wqd)+tm_dots(col = "blue")+
-        tm_shape(ndt_spat)+tm_dots()
+tm_shape(hibb_wqd_po)+tm_dots(col = "blue")+
+        tm_shape(ndt_spat_po)+tm_dots()
     })
 
  }
