@@ -41,8 +41,10 @@ ui <- fluidPage(
                                map_info = wqd_df)),
         tabPanel("Explore all",
                 h2("All spatial data"),
+                p("BE PATIENT - The map takes a minute to load"),
                 p(" All data are displayed on the map, you can toggle through the 
-                  layers and turn their display off and on using the icon in the top left of the map"),
+                  layers and turn their display off and on using the icon in the top left of the map.
+                  Click on an object to see the type of information that is held for that object."),
                 tmapOutput("mapall"))
     )
 )
