@@ -21,6 +21,7 @@ wader_region_os <- readRDS("data/wader_region.RDS")
 wader_region_ll <- st_transform(wader_region_os, 4326)
 
 library(raster)
+# Data from Clare 
 budle_50m_os  <- readRDS("data/budle_50m.RDS")
 budle_75m_os  <- readRDS("data/budle_75m.RDS")
 budle_100m_os <- readRDS("data/budle_100m.RDS")
@@ -32,15 +33,20 @@ budle_100m_os <- readRDS("data/budle_100m.RDS")
 # crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 
+# Water Framework Directive 
 northumbria_twb_os <- readRDS("data/Northumbria_TWB.RDS")
 northumbria_swoc_os <- readRDS("data/Northumbria_SWOC.RDS")
 northumbria_swmc_os <- readRDS("data/Northumbria_SWMC.RDS")
+northumbria_rca_os <- readRDS("data/wfd_catchments_2019_stat.rds")
+northumbria_riv_os<- readRDS("data/wfd_rivers_2019_stat.rds")
 northumbria_twb_ll <- st_transform(northumbria_twb_os, 4326)
 northumbria_swoc_ll <- st_transform(northumbria_swoc_os, 4326)
 northumbria_swmc_ll <- st_transform(northumbria_swmc_os, 4326)
+northumbria_rca_ll <- st_transform(northumbria_rca_os, 4326)
+northumbria_riv_ll <- st_transform(northumbria_riv_os, 4326)
 
 region_df <- data.frame(
-  selection = c("Whole area", "IHU areas", "Wader groups", "Wader areas", "Wader region"),
+  selection = c("Whole area", "IHU areas",  "Wader groups", "Wader areas", "Wader region"),
   ll_map    = c("coast_ll", "areas_ll", "wader_groups_ll", "wader_areas_ll", "wader_region_ll"),
   os_map    = c("coast_os", "areas_os", "wader_groups_os", "wader_areas_os", "wader_region_os")
 )
@@ -53,14 +59,15 @@ budle_df <- data.frame(
 
 northumbria_wfd_df <- data.frame(
   selection = c("Transitional Water Bodies", "Surface Water Operational Catchments",
-                "Surface Water Management Catchments"),
-  ll_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll"),
-  os_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll")
+                "Surface Water Management Catchments","River catchements"),
+  ll_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll","northumbria_rca_ll"),
+  os_map    = c("northumbria_twb_ll", "northumbria_swoc_ll", "northumbria_swmc_ll", "northumbria_rca_os")
 )
 
 
-ndt_spat <- readRDS("data/ndt_spat_2021.rds")
-hibb_wqd <- readRDS("data/HIBB_WQD.rds")
+ndt_spat_po <- readRDS("data/ndt_spat_2016-2022.rds")
+hibb_wqd_po <- readRDS("data/HIBB_WQD.rds")
+river_level_po <- readRDS("data/river_level_data.rds")
 
 wqd_df <- data.frame(
   selection = c("Standard monitoring data","HIBB Project Data"),
