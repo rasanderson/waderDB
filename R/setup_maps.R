@@ -23,14 +23,18 @@ wader_region_ll <- st_transform(wader_region_os, 4326)
 library(raster)
 # Data from Clare 
 budle_50m_os  <- readRDS("data/budle_50m.RDS")
+budle_50m_os@file@name <- "data/budle_crop_50m.tif"
 budle_75m_os  <- readRDS("data/budle_75m.RDS")
+budle_75m_os@file@name <- "data/budle_crop_75m.tif"
 budle_100m_os <- readRDS("data/budle_100m.RDS")
- #budle_50m_ll  <- projectRaster(budle_50m_os, crs=CRS("+init=epsg:4326"))
-# budle_75m_ll  <- projectRaster(budle_75m_os, crs=CRS("+init=epsg:4326"))
-# budle_100m_ll <- projectRaster(budle_100m_os, crs=CRS("+init=epsg:4326"))
-# crs(budle_50m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-# crs(budle_75m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-# crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+budle_100m_os@file@name <- "data/budle_crop_100m.tif"
+
+budle_50m_ll  <- projectRaster(budle_50m_os, crs=CRS("+init=epsg:4326"))
+budle_75m_ll  <- projectRaster(budle_75m_os, crs=CRS("+init=epsg:4326"))
+budle_100m_ll <- projectRaster(budle_100m_os, crs=CRS("+init=epsg:4326"))
+crs(budle_50m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+crs(budle_75m_ll)  <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+crs(budle_100m_ll) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 
 # Water Framework Directive 
